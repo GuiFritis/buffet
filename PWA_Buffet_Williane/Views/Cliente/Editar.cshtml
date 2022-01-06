@@ -1,0 +1,149 @@
+@model PWA_Buffet_Williane.ViewModels.Buffet.Cliente.ClienteViewModel
+
+@{
+    ViewData["Title"] = "Ver/Editar";
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+}
+
+@if (Model.MsgErro != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <p>@Model.MsgErro</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+
+@if (Model.MsgSucesso != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <p>@Model.MsgSucesso</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<h1>Ver/Editar Cliente</h1>
+
+<h4> Cliente </h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Editar" method="POST">
+            <div class="text-danger"></div>
+            <input type="hidden" asp-for="Cliente.Id" />
+            <div class="form-group">
+                <label asp-for="Cliente.Nome" class="control-label"> Nome </label>
+                <input type="text" asp-for="Cliente.Nome" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <label asp-for="Cliente.Email" class="control-label"> E-mail </label>
+                <input type="text" asp-for="Cliente.Email" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <label asp-for="Cliente.Endereco" class="control-label"> Endereço </label>
+                <input type="text" asp-for="Cliente.Endereco" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <label asp-for="Cliente.Observacoes" class="control-label"> Observações </label>
+                <textarea asp-for="Cliente.Observacoes" class="form-control" > </textarea>
+            </div>
+            @if (@Model.Cliente.TipoCliente.Descricao.Equals("Pessoa Física"))
+            {
+                <div class="form-group">
+                    <label asp-for="Cliente.CPF" class="control-label"> CPF </label>
+                    <input type="text" minlength="11" maxlength="11" asp-for="Cliente.CPF" class="form-control cpf" required />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Cliente.DataNasc" class="control-label"> Data de Nascimento </label>
+                    <input type="date" asp-for="Cliente.DataNasc"  class="form-control" required />
+                </div>
+            }
+            else
+            {
+                <div class="form-group">
+                    <label asp-for="Cliente.CNPJ" class="control-label"> CNPJ </label>
+                    <input type="text" minlength="14" maxlength="14" asp-for="Cliente.CNPJ" class="form-control cnpj" required />
+                </div>
+            }
+            <div class="form-group">
+                <input type="submit" value="Salvar" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<h4> Lista de Eventos do Cliente </h4>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                Nome
+            </th>
+            <th>
+                Descrição
+            </th>
+            <th>
+                Tipo de Evento
+            </th>
+            <th>
+                Horário de Início
+            </th>
+            <th>
+                Horário Fim
+            </th>
+            <th>
+                Situação do Evento
+            </th>
+            <th>
+                Observações
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+@if (@Model.Cliente.Eventos != null && @Model.Cliente.Eventos.Count > 0)
+{
+        @foreach (var evento in @Model.Cliente.Eventos)
+        {
+            <tr>
+                <td>
+                    @evento.Nome
+                </td>
+                <td>
+                    @evento.Descricao
+                </td>
+                <td>
+                    @evento.TipoEvento.Descricao
+                </td>
+                <td>
+                    @evento.DataHoraInicio.ToString("dd/MM/yyyy HH:mm")
+                </td>
+                <td>
+                    @evento.DataHoraFim.ToString("dd/MM/yyyy HH:mm")
+                </td>
+                <td>
+                    @evento.SituacaoEvento.Descricao
+                </td>
+                <td>
+                    @evento.Observacoes
+                </td>
+            </tr>
+        }
+       
+}
+else
+{
+     <tr>
+         <td colspan="7" class="text-danger text-center">Nenhum registro encontrado</td>
+     </tr>
+}
+    </tbody>
+</table>
+        
+<div>
+    <a class="btn btn-success" asp-action="ListaCliente">Voltar para a lista</a>
+</div>
+

@@ -1,0 +1,91 @@
+@model PWA_Buffet_Williane.ViewModels.Buffet.Cliente.ClienteViewModel
+
+@{
+    ViewData["Title"] = "Deletar";
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+}
+
+@if (Model.MsgErro != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <p>@Model.MsgErro</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+
+@if (Model.MsgSucesso != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <p>@Model.MsgSucesso</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<h1>Deletar Cliente</h1>
+
+<h3>Deseja realmente deletar esse cliente?</h3>
+<div>
+    <h4>Cliente</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            Nome
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Cliente.Nome)
+        </dd>
+        <dt class = "col-sm-2">
+            E-mail
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Cliente.Email)
+        </dd>
+        <dt class = "col-sm-2">
+            Endereço
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Cliente.Endereco)
+        </dd>
+        <dt class="col-sm-2">
+            Observações
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Cliente.Observacoes)
+        </dd>
+        @if (@Model.Cliente.TipoCliente.Descricao.Equals("Pessoa Física"))
+        {
+            <dt class = "col-sm-2">
+                CPF
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Cliente.CPF)
+            </dd>
+            <dt class = "col-sm-2">
+                Data de Nascimento
+            </dt>
+            <dd class = "col-sm-10">
+                @Model.Cliente.DataNasc.Date.ToString("dd/MM/yyyy")
+            </dd>
+        }
+        else
+        {
+            <dt class = "col-sm-2">
+                CNPJ
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Cliente.CNPJ)
+            </dd>
+        }
+    </dl>
+    
+    <form asp-action="Deletar">
+        <input type="hidden" asp-for="Cliente.Id" />
+        <input type="submit" value="Deletar" class="btn btn-danger" />
+        <a class="btn btn-success" asp-action="ListaCliente">Voltar para a lista</a>
+    </form>
+</div>

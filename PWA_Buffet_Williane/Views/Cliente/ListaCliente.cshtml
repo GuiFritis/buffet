@@ -1,0 +1,205 @@
+@model PWA_Buffet_Williane.ViewModels.Buffet.Cliente.ClienteViewModel
+
+@{
+    ViewData["Title"] = "Lista";
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+}
+
+@if (Model.MsgErro != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <p>@Model.MsgErro</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+@if (Model.MsgSucesso != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <p>@Model.MsgSucesso</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<h1>Lista de Clientes</h1>
+
+<p>
+    <a class="btn btn-success" asp-action="CadastraCliente"> Cadastrar Novo Cliente <i class="icofont-plus-circle"></i></a>
+</p>
+
+<h4> Filtros </h4>
+<div class="col-md-18">
+     <form asp-action="ListaCliente" method="GET">
+        <div class="row">
+             <div class="col-md-6 form-group">
+                <label for="filtroNome" class="control-label"> Nome: </label>
+                 <input type="text" class="form-control" name="Nome" id="filtroNome" value="@Model.Filtros.Nome"/>
+             </div>
+            <div class="col-md-6 form-group">
+                <label for="filtroEmail" class="control-label"> E-mail: </label>
+                <input type="text" class="form-control" name="Email" id="filtroEmail" value="@Model.Filtros.Email"/>
+            </div>
+            <div class="col-md-6 form-group">
+                <label for="filtroEndereco" class="control-label"> Endereço: </label>
+                <input type="text" class="form-control" name="Endereco" id="filtroEndereco" value="@Model.Filtros.Endereco"/>
+            </div>
+            <div class="col-md-6 form-group">
+                <label for="filtroObservacoes" class="control-label"> Observações: </label>
+                <textarea class="form-control" name="Observacoes" id="filtroObservacoes" value="@Model.Filtros.Observacoes"></textarea>
+            </div>
+            <div class="col-md-6 form-group">
+                Filtro para Pessoa Física
+                <div class="col-md-6 form-group">
+                    <label for="filtroCPF" class="control-label"> CPF: </label>
+                    <input type="text" maxlength="11" class="form-control" name="CPF" id="filtroCPF" value="@Model.Filtros.CPF"/>
+                </div>
+            </div>
+            <div class="col-md-6 form-group">
+                Filtro para Pessoa Jurídica
+                <div class="col-md-6 form-group">
+                    <label for="filtroCNPJ" class="control-label"> CNPJ: </label>
+                    <input type="text" maxlength="14" class="form-control" name="CNPJ" id="filtroCNPJ" value="@Model.Filtros.CNPJ"/>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 form-group">
+                <button class="btn btn-success" type="submit">Filtrar <i class="icofont-search-user"></i></button>
+                <a class="btn btn-secondary" asp-action="ListaCliente">Limpar Filtros <i class="icofont-close-line-circled"></i></a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<h4> Clientes - Pessoa Física </h4>  
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            Nome
+        </th>
+        <th>
+            E-mail
+        </th>
+        <th>
+            Endereço
+        </th>
+        <th>
+            Observações
+        </th>
+        <th>
+            CPF
+        </th>
+        <th>
+            Data de Nascimento
+        </th>
+        <th>
+            Ações
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+@if (@Model.ListaClientesPF.Count > 0)
+{
+    @foreach (var clientePF in @Model.ListaClientesPF)
+    {
+        <tr>
+            <td>
+                @clientePF.Nome
+            </td>
+            <td>
+                @clientePF.Email
+            </td>
+            <td>
+                @clientePF.Endereco
+            </td>
+            <td>
+                @clientePF.Observacoes
+            </td>
+            <td>
+                @clientePF.CPF
+            </td>
+            <td>
+                @clientePF.DataNasc.Date.ToString("dd/MM/yyyy")
+            </td>
+            <td>
+                <a class="text-success" asp-action="Editar" asp-route-id="@clientePF.Id"> <i class="icofont-eye-alt"></i></a> /
+                <a class="text-danger" asp-action="Deletar" asp-route-id="@clientePF.Id"><i class="icofont-ui-delete"></i> </a>
+            </td>
+        </tr>
+    }
+}
+else
+{
+    <tr>
+        <td colspan="7" class="text-danger text-center">Nenhum registro encontrado</td>
+    </tr>
+}
+    </tbody>
+</table>
+
+<h4> Clientes - Pessoa Jurídica </h4>  
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            Nome
+        </th>
+        <th>
+            E-mail
+        </th>
+        <th>
+            Endereço
+        </th>
+        <th>
+            Observações
+        </th>
+        <th>
+            CNPJ
+        </th>
+        <th>
+            Ações
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+@if (@Model.ListaClientesPJ.Count > 0)
+{
+    @foreach (var clientePJ in @Model.ListaClientesPJ)
+    {
+        <tr>
+            <td>
+                @clientePJ.Nome
+            </td>
+            <td>
+                @clientePJ.Email
+            </td>
+            <td>
+                @clientePJ.Endereco
+            </td>
+            <td>
+                @clientePJ.Observacoes
+            </td>
+            <td>
+                @clientePJ.CNPJ
+            </td>
+            <td>
+                <a class="text-success" asp-action="Editar" asp-route-id="@clientePJ.Id" title="Editar"><i class="icofont-eye-alt"></i></a> /
+                <a class="text-danger" asp-action="Deletar" asp-route-id="@clientePJ.Id" title="Deletar"><i class="icofont-ui-delete"></i></a>
+            </td>
+        </tr>
+    }
+  
+}
+else
+{
+    <tr>
+        <td colspan="6" class="text-danger text-center">Nenhum registro encontrado</td>
+    </tr>
+}
+  </tbody>
+</table>

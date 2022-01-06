@@ -1,0 +1,97 @@
+@model PWA_Buffet_Williane.ViewModels.Buffet.Local.LocalViewModel
+
+@{
+    ViewData["Title"] = "Lista";
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+}
+
+@if (Model.MsgErro != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <p>@Model.MsgErro</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+@if (Model.MsgSucesso != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <p>@Model.MsgSucesso</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<h1> Lista de Locais </h1>
+
+<p>
+    <a class="btn btn-success" asp-action="CadastraLocal"> Cadastrar Novo Local <i class="icofont-plus-circle"></i></a>
+</p>
+
+<h4> Filtros </h4>
+<div class="col-md-18">
+     <form asp-action="ListaLocal" method="GET">
+        <div class="row">
+             <div class="col-md-6 form-group">
+                <label for="filtroDescricao" class="control-label">Descrição:</label>
+                <input type="text" class="form-control" name="Descricao" id="filtroDescricao" value="@Model.Filtros.Descricao">
+             </div>
+             <div class="col-md-6 form-group">
+                 <label for="filtroEndereco" class="control-label">Endereço:</label>
+                 <input type="text" class="form-control" name="Endereco" id="filtroEndereco" value="@Model.Filtros.Endereco">
+             </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 form-group">
+                <button class="btn btn-success" type="submit">Filtrar <i class="icofont-search-property"></i></button>
+                <a class="btn btn-secondary" asp-action="ListaLocal">Limpar Filtros <i class="icofont-close-line-circled"></i></a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<h4> Locais </h4> 
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            Descrição
+        </th>
+        <th>
+            Endereço
+        </th>
+        <th>
+            Ações
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+@if (@Model.ListaLocais.Count > 0)
+{
+    @foreach (var local in @Model.ListaLocais)
+{
+    <tr>
+        <td>
+            @local.Descricao
+        </td>
+        <td>
+            @local.Endereco
+        </td>
+        <td>
+            <a class="text-success" asp-action="Editar" asp-route-id="@local.Id" title="Editar"><i class="icofont-eye-alt"></i></a> /
+            <a class="text-danger" asp-action="Deletar" asp-route-id="@local.Id" title="Deletar"><i class="icofont-ui-delete"></i></a>
+        </td>
+    </tr>
+}
+}
+else
+{
+    <tr>
+        <td colspan="3" class="text-danger text-center">Nenhum registro encontrado</td>
+    </tr>
+}
+    </tbody>
+</table>

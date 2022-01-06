@@ -1,0 +1,160 @@
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@using PWA_Buffet_Williane.Models.Buffet.Evento
+@using PWA_Buffet_Williane.Models.Buffet.Local
+@using PWA_Buffet_Williane.Models.Buffet.TipoEvento
+@model PWA_Buffet_Williane.ViewModels.ListaEventoViewModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+    var selected = false;
+}
+
+@if (Model.MsgErro != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <p>@Model.MsgErro</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+@if (Model.MsgSucesso != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <p>@Model.MsgSucesso</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<h1>Lista de Eventos</h1>
+
+<p>
+    <a asp-action="CadastraEvento" class="btn btn-success">Cadastrar Novo Evento <i class="icofont-plus-circle"></i></a>
+</p>
+
+<h4>Filtros</h4>
+<form asp-action="ListaEvento">
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label class="control-label">Nome</label>
+            <input name="FiltroNome" class="form-control" value="@Model.FiltroEvento.FiltroNome"/>
+        </div>
+        <div class="col-md-6 form-group">
+            <label class="control-label">Local</label>
+            <select name="FiltroLocal" class="form-control">
+                <option value="">Selecione</option>
+                @foreach (LocalEntity local in Model.Locais)
+                {
+                    selected = Model.FiltroEvento.FiltroLocal != null && Model.FiltroEvento.FiltroLocal.Equals(local.Id.ToString());
+                    <option value="@local.Id" selected="@selected">
+                        @local.Descricao
+                    </option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label class="control-label">Situação</label>
+            <select name="FiltroSituacao" class="form-control">
+                <option value="">Selecione</option>
+                @foreach (SituacaoEventoEntity situacao in Model.Situacao)
+                {
+                    selected = Model.FiltroEvento.FiltroSituacao != null && Model.FiltroEvento.FiltroSituacao.Equals(situacao.Id.ToString());
+                    <option value="@situacao.Id" selected="@selected">
+                        @situacao.Descricao
+                    </option>
+                }
+            </select>
+        </div>
+        <div class="col-md-6 form-group">
+            <label class="control-label">Tipo</label>
+            <select name="FiltroTipo" class="form-control">
+                <option value="">Selecione</option>
+                @foreach (TipoEventoEntity tipo in Model.TipoEvento)
+                {
+                    selected = Model.FiltroEvento.FiltroTipo != null && Model.FiltroEvento.FiltroTipo.Equals(tipo.Id.ToString());
+                    <option value="@tipo.Id" selected="@selected">
+                        @tipo.Descricao
+                    </option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <button class="btn btn-success" type="submit">Filtrar <i class="icofont-search-2"></i></button>
+            <a class="btn btn-secondary" asp-action="ListaEvento">Limpar Filtros <i class="icofont-close-line-circled"></i></a>
+        </div>
+    </div>
+</form>
+
+<h4> Eventos </h4> 
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Nome
+            </th>
+            <th>
+                Tipo
+            </th>
+            <th>
+                Local
+            </th>
+            <th>
+                Início
+            </th>
+            <th>
+                Fim
+            </th>
+            <th>
+                Situação
+            </th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+    
+@if (@Model.Eventos.Count() > 0)
+{
+    @foreach (var evento in Model.Eventos)
+    {
+        <tr>
+            <td>
+                @evento.Nome
+            </td>
+            <td>
+                @evento.TipoEvento.Descricao
+            </td>
+            <td>
+                @evento.Local.Descricao
+            </td>
+            <td>
+                @evento.DataHoraInicio
+            </td>
+            <td>
+                @evento.DataHoraFim
+            </td>
+            <td>
+                @evento.SituacaoEvento.Descricao
+            </td>
+            <td>
+                <a class="text-success" asp-action="Edit" asp-route-id="@evento.Id" title="Editar"><i class="icofont-eye-alt"></i></a> /
+                <a class="text-danger" asp-action="Delete" asp-route-id="@evento.Id" title="Deletar"><i class="icofont-ui-delete"></i></a>
+            </td>
+        </tr>
+    }
+}
+else
+{
+    <tr>
+        <td colspan="7" class="text-danger text-center">Nenhum registro encontrado</td>
+    </tr>
+}
+    </tbody>
+</table>

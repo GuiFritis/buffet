@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Buffet Go </title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/icofont/icofont.min.css"/>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+
+    <div class="text-center" style="text-align:center;margin-top:20px;margin-bottom:20px">
+        <a asp-controller="PainelDoUsuario" asp-action="Index"> <img src="/logo.png" height="100" /> </a>
+    </div>
+
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light @*bg-white*@ alert alert-light border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="PainelDoUsuario" asp-action="Index"> Buffet <span class="text-success">GO</span> </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between" color>
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="PainelDoUsuario" asp-action="Usuario">Painel do Usuário <i class="icofont-user-alt-1"></i></a>
+                        </li>                   
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Ajuda" asp-action="Index">Ajuda <i class="icofont-question"></i></a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav navbar-right">                    
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Acesso" asp-action="Login"><i class="icofont-logout"></i> Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <nav class="navbar navbar-light @*bg-light*@ alert alert-success border-bottom box-shadow mb-3 justify-content-center">
+        <div class="container justify-content-center">
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-center" color>
+                <ul class="nav justify-content-center">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Cliente" asp-action="ListaCliente">Clientes <i class="icofont-people"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Evento" asp-action="ListaEvento">Eventos <i class="icofont-ui-calendar"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Local" asp-action="ListaLocal">Locais <i class="icofont-location-pin"></i></a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link text-dark dropdown-toggle" data-toggle="dropdown" > Configurações <i class="icofont-gear-alt"></i></a>
+                        <span class="caret"></span>
+                        <div class="dropdown-menu alert-success border-bottom box-shadow justify-content-center" role="menu">
+                            <a class="dropdown-item text-dark" asp-controller="TipoEvento" asp-action="ListaTiposDeEvento"> Tipos de Evento </a>
+                        <div><hr class="dropdown-divider"></div>
+                            <a class="dropdown-item text-dark" asp-controller="SituacaoEvento" asp-action="Lista"> Situações de Eventos </a>
+                        <div><hr class="dropdown-divider"></div>
+                            <a class="dropdown-item text-dark" asp-controller="SituacaoConvidado" asp-action="Lista"> Situações de Convidados </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="text-center">
+            &copy; 2021 - Buffet Go - <a asp-area="" asp-controller="InformacoesLegais" asp-action="Privacidade"> Política de Privacidade </a> - <a asp-area="" asp-controller="InformacoesLegais" asp-action="Termos"> Termos de Uso </a>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery.mask.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

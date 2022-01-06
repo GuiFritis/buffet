@@ -1,0 +1,63 @@
+@model PWA_Buffet_Williane.ViewModels.Buffet.SituacaoConvidado.ListaSituacaoEventoViewModel
+
+@{
+    ViewData["Title"] = "Lista Situação Evento";
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+}
+
+<h1>Lista Situações Eventos</h1>
+@if (Model.MsgErro != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <p>@Model.MsgErro</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+@if (Model.MsgSucesso != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <p>@Model.MsgSucesso</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+<p>
+    <a class="btn btn-success" asp-action="Cadastro">Cadastrar Novo <i class="icofont-plus-circle"></i></a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Descrição
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @if (Model.Situacoes.Any())
+    {
+        @foreach (var situacao in Model.Situacoes)
+        {
+            <tr>
+                <td>
+                    @situacao.Descricao
+                </td>
+                <td>
+                    <a class="text-success" asp-action="Edit" asp-route-id="@situacao.Id" title="Editar"><i class="icofont-eye-alt"></i></a> /
+                    <a class="text-danger" asp-action="Delete" asp-route-id="@situacao.Id" title="Deletar"><i class="icofont-ui-delete"></i></a>
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td class="text-danger text-center">Não encontramos nenhum registro!</td>
+        </tr>
+    }
+    </tbody>
+</table>

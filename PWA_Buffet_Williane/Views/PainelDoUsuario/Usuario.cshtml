@@ -1,0 +1,94 @@
+﻿@model PWA_Buffet_Williane.ViewModels.Acesso.UsuarioViewModel
+
+@{
+    ViewData["Title"] = "Painel do Usuário";
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+}
+
+@if (Model.MsgErro != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <p>@Model.MsgErro</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+@if (Model.MsgSucesso != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <p>@Model.MsgSucesso</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<h1> Painel do Usuário </h1>
+
+<h4> Dados do Usuário </h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Atualizar" method="POST">
+            <div class="text-danger"></div>
+            <input type="hidden" asp-for="Usuario.Id" />
+            <div class="form-group">
+                <label asp-for="Usuario.Email" class="control-label"> Email </label>
+                <input asp-for="Usuario.Email" class="form-control" required readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="SenhaAtual" class="control-label"> Senha Atual </label>
+                <input type="password" asp-for="SenhaAtual" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <label asp-for="Senha" class="control-label"> Senha Nova </label>
+                <input type="password" asp-for="Senha" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <label asp-for="ConfirmaSenha" class="control-label"> Confirmação da Senha Nova </label>
+                <input type="password" asp-for="ConfirmaSenha" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Atualizar Senha" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<h4> Histórico de Logins do Usuário </h4>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                Email
+            </th>
+            <th>
+                Horário de Login
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+@if (@Model.HistoricoLoginUser != null && @Model.HistoricoLoginUser.Count > 0)
+{
+        @foreach (var historico in @Model.HistoricoLoginUser)
+        {
+            <tr>
+                <td>
+                    @historico.Usuario.Email
+                </td>
+                <td>
+                    @historico.DataHoraLogin.ToString("dd/MM/yyyy HH:mm:ss")
+                </td>
+            </tr>
+        }
+}
+else
+{
+     <tr>
+         <td colspan="2" class="text-danger text-center">Nenhum registro encontrado</td>
+     </tr>
+}
+ </tbody>
+</table>

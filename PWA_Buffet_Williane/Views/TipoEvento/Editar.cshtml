@@ -1,0 +1,51 @@
+@model PWA_Buffet_Williane.ViewModels.Buffet.TipoEvento.TipoEventoViewModel
+
+@{
+    ViewData["Title"] = "Ver/Editar";
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+}
+
+@if (Model.MsgErro != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <p>@Model.MsgErro</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+@if (Model.MsgSucesso != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <p>@Model.MsgSucesso</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<h1>Ver/Editar Tipo de Evento</h1>
+
+<h4>Tipo de Evento</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Editar">
+            <div class="text-danger"></div>
+            <input type="hidden" asp-for="TipoEvento.Id" />
+            <div class="form-group">
+                <label asp-for="TipoEvento.Descricao" class="control-label"> Descrição </label>
+                <input asp-for="TipoEvento.Descricao" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Salvar" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+   <a class="btn btn-success" asp-action="ListaTiposDeEvento">Voltar para a lista</a>
+</div>
+

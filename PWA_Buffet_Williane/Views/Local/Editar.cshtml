@@ -1,0 +1,124 @@
+@model PWA_Buffet_Williane.ViewModels.Buffet.Local.LocalViewModel
+
+@{
+    ViewData["Title"] = "Ver/Editar";
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+}
+
+@if (Model.MsgErro != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <p>@Model.MsgErro</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+@if (Model.MsgSucesso != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <p>@Model.MsgSucesso</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<h1>Ver/Editar Local</h1>
+
+<h4> Local </h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Editar" method="POST">
+            <div class="text-danger"></div>
+            <input type="hidden" asp-for="Local.Id" />
+            <div class="form-group">
+                <label asp-for="Local.Descricao" class="control-label"> Descrição </label>
+                <input asp-for="Local.Descricao" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <label asp-for="Local.Endereco" class="control-label"> Endereço </label>
+                <input asp-for="Local.Endereco" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Salvar" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<h4> Lista de Eventos do Local </h4>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                Nome
+            </th>
+            <th>
+                Descrição
+            </th>
+            <th>
+                Tipo de Evento
+            </th>
+            <th>
+                Horário de Início
+            </th>
+            <th>
+                Horário Fim
+            </th>
+            <th>
+                Situação do Evento
+            </th>
+            <th>
+                Observações
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+@if (@Model.Local.Eventos != null && @Model.Local.Eventos.Count > 0)
+{
+        @foreach (var evento in @Model.Local.Eventos)
+        {
+            <tr>
+                <td>
+                    @evento.Nome
+                </td>
+                <td>
+                    @evento.Descricao
+                </td>
+                <td>
+                    @evento.TipoEvento.Descricao
+                </td>
+                <td>
+                    @evento.DataHoraInicio
+                </td>
+                <td>
+                    @evento.DataHoraFim
+                </td>
+                <td>
+                    @evento.SituacaoEvento.Descricao
+                </td>
+                <td>
+                    @evento.Observacoes
+                </td>
+            </tr>
+        }
+       
+}
+else
+{
+     <tr>
+         <td colspan="7" class="text-danger text-center">Nenhum registro encontrado</td>
+     </tr>
+}
+ </tbody>
+</table>
+
+<div>
+    <a class="btn btn-success" asp-action="ListaLocal">Voltar para a lista</a>
+</div>
+        
+

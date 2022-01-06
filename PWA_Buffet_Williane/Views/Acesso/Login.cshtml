@@ -1,0 +1,66 @@
+﻿@model PWA_Buffet_Williane.ViewModels.Acesso.LoginViewModel
+
+@{ ViewData["Title"] = "Buffet Go"; }
+
+<div class="container-fluid corpo">
+    <div class="row justify-content-md-center h-100 p-5">
+        <div class="card-wrapper">
+            <div class="brand text-center">
+                <h1 class="logo-badge text-whitesmoke"><span class="fa fa-user-circle"></span></h1>
+            </div>
+            <div class="card fat">
+                <div class="card-body">
+
+                    <h4 style="text-align:center;margin-bottom:40px"> @ViewData["Title"] </h4>
+
+                    <div class="form-group" style="margin-bottom:30px">
+                        @if (TempData["msg-cadastro"] != null)
+                        {
+                            <p class="form-group mt-4"> @TempData["msg-cadastro"] </p>
+                        }
+                        else if (Model.ErroLogin != null)
+                        {
+                            <p class="form-group mt-4"> @Model.ErroLogin </p>
+                        }
+                    </div>
+
+                    <form method="POST" class="my-login-validation" asp-controller="Acesso" asp-action="Login">
+
+                        <div class="form-group">
+
+                            <label for="Login">Login</label>
+
+                            <input id="Login" type="text" class="form-control" name="Login" value="" required="" autofocus="">
+
+                        </div>
+
+                        <div class="form-group" style="margin-bottom:30px">
+
+                            <label for="Senha"> Senha </label>
+
+                            <div style="position:relative" id="eye-password-0">
+
+                                <input id="Senha" type="password" class="form-control" name="Senha" required="" data-eye="" style="padding-right: 60px;">
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-group m-0">
+                            <button type="submit" class="btn btn-success btn-block"> <i class="icofont-login"></i> Login </button>
+                        </div>
+                    </form>
+
+                    <div class="mt-4 text-center">
+                        <a class="btn btn-success btn-block" asp-controller="Acesso" asp-action="Cadastro"><i class="icofont-ui-user"></i> Cadastre-se </a>
+                    </div>
+
+                    <div class="mt-4 text-center">
+                        <a class="btn btn-success btn-block" asp-controller="Acesso" asp-action="RecuperarConta"> <i class="icofont-email"></i> Recuperar Conta </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

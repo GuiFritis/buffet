@@ -1,0 +1,59 @@
+@model PWA_Buffet_Williane.ViewModels.Buffet.SituacaoConvidado.CadastroSituacaoEventoViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+}
+
+<h1>Cadastrar Situação Evento</h1>
+@if (Model.MsgErro != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <p>@Model.MsgErro</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+@if (Model.MsgSucesso != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <p>@Model.MsgSucesso</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Cadastro">
+            @if (Model.Situacao != null)
+            {
+                <input type="hidden" name="Id" value="@Model.Situacao.Id"/>
+            }
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Situacao.Descricao" class="control-label"></label>
+                <input name="Descricao" asp-for="Situacao.Descricao" class="form-control"/>
+                <span asp-validation-for="Situacao.Descricao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                @if (Model.Situacao == null)
+                {
+                    <input type="submit" value="Inserir" class="btn btn-success"/>
+                }
+                else
+                {
+                    <input type="submit" value="Atualizar" class="btn btn-success"/>
+                }
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a class="btn btn-success" asp-action="Lista">Voltar</a>
+</div>
+

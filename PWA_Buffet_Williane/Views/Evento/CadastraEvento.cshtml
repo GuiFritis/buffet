@@ -1,0 +1,207 @@
+@using PWA_Buffet_Williane.Models.Buffet.Evento
+@using PWA_Buffet_Williane.Models.Buffet.Local
+@using PWA_Buffet_Williane.Models.Buffet.Cliente
+@using Microsoft.EntityFrameworkCore
+@using PWA_Buffet_Williane.Models.Buffet.Convidado
+@using PWA_Buffet_Williane.Models.Buffet.TipoEvento
+@model PWA_Buffet_Williane.ViewModels.CadastroEventoViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+    var selected = false;
+}
+
+@if (Model.MsgErro != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <p>@Model.MsgErro</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+@if (Model.MsgSucesso != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <p>@Model.MsgSucesso</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<h1>Cadastro Evento</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="CadastraEvento">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @if (Model.EventoEntity != null)
+            {
+                <input type="hidden" name="Id" asp-for="EventoEntity.Id" value="@Model.EventoEntity.Id"/>
+            }
+            <div class="form-group">
+                <label asp-for="EventoEntity.Nome" class="control-label"></label>
+                <input name="Nome" asp-for="EventoEntity.Nome" class="form-control" required/>
+                <span asp-validation-for="EventoEntity.Nome" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EventoEntity.Descricao" class="control-label"></label>
+                <input name="Descricao" asp-for="EventoEntity.Descricao" class="form-control" required/>
+                <span asp-validation-for="EventoEntity.Descricao" class="text-danger"></span>
+            </div>
+            <div class="form-group">   
+                <label asp-for="EventoEntity.Cliente" class="control-label"></label>
+                <select name="Cliente" asp-for="EventoEntity.Cliente" class="form-control" required>
+                    <option value="">Selecione</option>
+                    @foreach (ClienteEntity cliente in Model.Clientes)
+                    {
+                        if (Model.EventoEntity != null)
+                        {
+                            selected = Model.EventoEntity.Cliente.Equals(cliente);
+                        }
+                        <option value="@cliente.Id" selected="@selected">@cliente.Nome</option>
+                    }
+                </select>
+                <span asp-validation-for="EventoEntity.Cliente" class="text-danger"></span>
+            </div>
+            <div class="form-group">   
+                <label asp-for="EventoEntity.Local" class="control-label"></label>
+                <select name="Local" asp-for="EventoEntity.Local" class="form-control" required>
+                    <option value="">Selecione</option>
+                    @foreach (LocalEntity local in Model.Locais)
+                    {
+                        if (Model.EventoEntity != null)
+                        {
+                            selected = Model.EventoEntity.Local.Equals(local);
+                        }
+                        <option value="@local.Id" title="@local.Endereco" selected="@selected">@local.Descricao</option>
+                    }
+                </select>
+                <span asp-validation-for="EventoEntity.Local" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Situação</label>
+                <select name="SituacaoEvento" asp-for="EventoEntity.SituacaoEvento" class="form-control" required>
+                    <option value="">Selecione</option>
+                    @foreach (SituacaoEventoEntity situacao in Model.Situacao)
+                    {
+                        if (Model.EventoEntity != null)
+                        {
+                            selected = Model.EventoEntity.SituacaoEvento.Equals(situacao);
+                        }
+                        <option value="@situacao.Id" selected="@selected">
+                            @situacao.Descricao
+                        </option>
+                    }
+                </select>
+                <span asp-validation-for="EventoEntity.SituacaoEvento" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Tipo</label>
+                <select name="TipoEvento" asp-for="EventoEntity.TipoEvento" class="form-control" required>
+                    <option value="">Selecione</option>
+                    @foreach (TipoEventoEntity tipo in Model.TipoEvento)
+                    {
+                        if (Model.EventoEntity != null)
+                        {
+                            selected = Model.EventoEntity.TipoEvento.Equals(tipo);
+                        }
+                        <option value="@tipo.Id" selected="@selected">
+                            @tipo.Descricao
+                        </option>
+                    }
+                </select>
+                <span asp-validation-for="EventoEntity.TipoEvento" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EventoEntity.DataHoraInicio" class="control-label"></label>
+                <input name="DataHoraInicio" asp-for="EventoEntity.DataHoraInicio" class="form-control" min="@DateTime.Now.ToString("yyyy-MM-ddThh:mm")" required/>
+                <span asp-validation-for="EventoEntity.DataHoraInicio" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EventoEntity.DataHoraFim" class="control-label"></label>
+                <input name="DataHoraFim" asp-for="EventoEntity.DataHoraFim" class="form-control" min="@DateTime.Now.ToString("yyyy-MM-ddThh:mm")" required/>
+                <span asp-validation-for="EventoEntity.DataHoraFim" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EventoEntity.Observacoes" class="control-label"></label>
+                <textarea name="Observacoes" asp-for="EventoEntity.Observacoes" class="form-control" required></textarea>
+                <span asp-validation-for="EventoEntity.Observacoes" class="text-danger"></span>
+            </div>
+            @if (Model.EventoEntity != null)
+            {
+                <div class="form-group">
+                    <label asp-for="EventoEntity.RegistroDataInsert" class="control-label"></label>
+                    <input name="RegistroDataInsert" asp-for="EventoEntity.RegistroDataInsert" class="form-control" readonly />
+                    <span asp-validation-for="EventoEntity.RegistroDataInsert" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="EventoEntity.RegistroDataUpdate" class="control-label"></label>
+                    <input name="RegistroDataUpdate" asp-for="EventoEntity.RegistroDataUpdate" class="form-control" readonly />
+                    <span asp-validation-for="EventoEntity.RegistroDataUpdate" class="text-danger"></span>
+                </div>
+            }
+            <div class="form-group">
+                @if (@Model.EventoEntity == null)
+                {
+                    <input type="submit" value="Inserir" class="btn btn-success"/>
+                }
+                else
+                {
+                    <input type="submit" value="Atualizar" class="btn btn-success"/>
+                }
+            </div>
+        </form>
+    </div>
+</div>
+@if (Model.EventoEntity != null)
+{
+    <div class="row">
+        <div class="col-12">
+            <h4> Lista de Convidados do Evento </h4>
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Situação</th>
+                    <th><a asp-controller="Convidado" asp-action="CadastraConvidado" asp-route-evento="@Model.EventoEntity.Id">Cadastrar Convidado <i class="icofont-plus-circle"></i></a></th>
+                </tr>
+                </thead>
+                <tbody>
+                @if (Model.Convidados.Count > 0)
+                {
+                    @foreach (ConvidadoEntity convidado in Model.Convidados)
+                    {
+                        <tr>
+                            <td>@convidado.Nome</td>
+                            <td>@convidado.Email</td>
+                            <td>@convidado.SituacaoConvidado.Descricao</td>
+                            <td>
+                                <a class="text-success" asp-controller="Convidado" asp-action="Edit" asp-route-id="@convidado.Id" asp-route-evento="@Model.EventoEntity.Id" title="Editar"><i class="icofont-eye-alt"></i></a> |
+                                <a class="text-danger" asp-controller="Convidado" asp-action="Delete" asp-route-id="@convidado.Id" asp-route-evento="@Model.EventoEntity.Id" title="Editar"><i class="icofont-ui-delete"></i></a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4" class="text-center text-danger">Sem registros</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+<div>
+    <a class="btn btn-success" asp-action="ListaEvento">Voltar</a>
+</div>
+
